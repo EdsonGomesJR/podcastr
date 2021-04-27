@@ -9,6 +9,14 @@ import React from "react";
 import styles from "./home.module.scss";
 import Link from "next/link";
 import Head from "next/head";
+import {
+  Box,
+  Text,
+  Button,
+  Grid,
+  Flex,
+  Image as ChakraImage,
+} from "@chakra-ui/react";
 
 type Episode = {
   id: string;
@@ -30,17 +38,40 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
   const { playList } = usePlayer();
   const episodeList = [...latestEpisodes, ...allEpisodes];
   return (
-    <div className={styles.homepage}>
+    <Box
+      p="0 4rem"
+      h="calc(100vh - 6.5rem)"
+      overflowY="scroll"
+      // className={styles.homepage}
+    >
       <Head>
         <title>Home | podcastr</title>
       </Head>
-      <section className={styles.latestEpisodes}>
-        <h2>Últimos lançamentos</h2>
+      <Box as="section" className={styles.latestEpisodes}>
+        <Text mt="3rem" mb="1.5rem" as="h2">
+          Últimos lançamentos
+        </Text>
 
-        <ul>
+        <Grid
+          as="ul"
+          listStyleType="none"
+          gridTemplateColumns="repeat(2, 1fr)"
+          gap="1.5rem"
+        >
           {latestEpisodes.map((episode, index) => (
-            <li key={episode.id}>
+            <Flex
+              as="li"
+              bgColor="var(--white)"
+              border="1px solid"
+              borderColor="var(--gray-100)"
+              borderRadius="1.5rem"
+              p="1.25rem"
+              pos="relative"
+              align="center"
+              key={episode.id}
+            >
               <Image
+                className={styles.nextImage}
                 width={192}
                 height={192}
                 src={episode.thumbnail}
@@ -48,27 +79,72 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
                 objectFit="cover"
               />
 
-              <div className={styles.episodeDetails}>
+              <Box
+                maxW="75%"
+                flex="1"
+                ml="1rem"
+                className={styles.episodeDetails}
+              >
                 <Link href={`/episodes/${episode.id}`}>
-                  <a>{episode.title}</a>
+                  <Text
+                    as="a"
+                    display="block"
+                    color="var(--gray-800)"
+                    fontFamily="Lexend"
+                    fontWeight={600}
+                    textDecor="none"
+                    cursor="pointer"
+                    _hover={{
+                      textDecor: "underline",
+                    }}
+                  >
+                    {episode.title}
+                  </Text>
                 </Link>
-                <p>{episode.members}</p>
-                <span>{episode.publishedAt}</span>
-                <span>{episode.durationAsString}</span>
-              </div>
+                <Text
+                  as="p"
+                  fontSize="0.875rem"
+                  mt="0.5rem"
+                  maxW="70%"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
+                  {episode.members}
+                </Text>
+                <Text
+                  as="span"
+                  display="inline-block"
+                  mt="0.5rem"
+                  fontSize="0.875rem"
+                >
+                  {episode.publishedAt}
+                </Text>
+                <Text
+                  as="span"
+                  display="inline-block"
+                  mt="0.5rem"
+                  fontSize="0.875rem"
+                >
+                  {episode.durationAsString}
+                </Text>
+              </Box>
 
-              <button
+              <Box
+                as="button"
                 type="button"
                 onClick={() => playList(episodeList, index)}
               >
                 <img src="/play-green.svg" alt="Tocar episódio" />
-              </button>
-            </li>
+              </Box>
+            </Flex>
           ))}
-        </ul>
-      </section>
+        </Grid>
+      </Box>
       <section className={styles.allEpisodes}>
-        <h2>Todos os episódios</h2>
+        <Box as="h2" mt="3rem" mb="1.5rem">
+          Todos os episódios
+        </Box>
         <table cellSpacing={0}>
           <thead>
             <tr>
@@ -127,7 +203,7 @@ export default function Home({ allEpisodes, latestEpisodes }: HomeProps) {
           </tbody>
         </table>
       </section>
-    </div>
+    </Box>
   );
 }
 

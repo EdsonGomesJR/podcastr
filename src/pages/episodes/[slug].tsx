@@ -1,14 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { format, parseISO } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
-import { useRouter } from "next/router";
 import { api } from "../../services/api";
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
 import styles from "./episode.module.scss";
-import { PlayerContext, usePlayer } from "../../contexts/PlayerContext";
+import { usePlayer } from "../../contexts/PlayerContext";
 type Episode = {
   id: string;
   title: string;
